@@ -3,8 +3,16 @@ var bodyParser =require('body-parser')
 var {ObjectID} = require('mongodb')
 var mongoose = require('mongoose');
 var {Todo,User} =require('./model/models')
-var url = process.env.MONGOLAB_URI ||process.env.MONGOHQ_URL || 'mongodb://localhost:27017'
-mongoose.connect(url);
+mongoose.Promise=global.Promise
+var url = 'mongodb://heroku_xvrbg0g8:9bnb5phpgc7nug8algefed2hu5@ds231207.mlab.com:31207/heroku_xvrbg0g8' || 'mongodb://localhost:27017'
+mongoose.connect(url,{useNewUrlParser:true},function (err,db){
+  if (err) {
+  console.log(err);
+  }
+  else {
+    console.log('connected to',url);
+  }
+});
 
 var app = express();
 app.use(bodyParser.json());
