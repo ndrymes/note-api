@@ -44,6 +44,14 @@ app.post('/user',(req,res) => {
   })
 })
 // Get todos from DB
+
+app.get('/repo',(req,res) => {
+  Todo.find().then((docs) => {
+    res.status(200).send({docs})
+  }).catch((e) => {
+    res.status(400).send()
+  })
+})
 app.get('/todos/:id',(req,res) => {
   var id=req.params.id
   console.log(id);
@@ -58,6 +66,24 @@ res.send({todo})
 }).catch((e) => {
   res.status(400).send()
 })
+})
+
+// DELETE from // DB
+app.delete('/todos/:id',(req,res)=>{
+  var id = req.params.id
+  console.log(id);
+  if (!ObjectID.isValid(id)) {
+     return res.status(400).send()
+  }
+  Todo.findByIdAndRemove(id).then((docs) => {
+    console.log(docs);
+   if (!docs) {
+     return res.status(404).send([])
+   }
+   res.status(200).send(`This ${id} is deleted`)
+  }).catch((e) =>{
+     return res.status(400).send()
+  })
 })
 
 app.listen(port,() => {
